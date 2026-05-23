@@ -1,0 +1,22 @@
+# Maven
+target/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# Base de datos SQLite (se crea en local automáticamente)
+*.db
+*.sqlite
+
+# OS
+.DS_Store
+Thumbs.db
