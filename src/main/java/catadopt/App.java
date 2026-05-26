@@ -4,6 +4,7 @@ import catadopt.service.CatApiService;
 import catadopt.service.DatabaseService;
 import catadopt.service.NavigationService;
 import catadopt.service.api.MockCatApiService;
+import catadopt.service.api.TheCatApiService;
 import catadopt.service.database.SQLiteDatabaseService;
 import catadopt.service.navigation.JavaFXNavigationService;
 import javafx.application.Application;
@@ -16,17 +17,19 @@ public class App extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		CatApiService apiService = new MockCatApiService();
+		CatApiService apiService = new TheCatApiService();
 		DatabaseService databaseService = new SQLiteDatabaseService();
 		NavigationService navigationService = new JavaFXNavigationService(stage, apiService, databaseService);
 		
+		databaseService.start();
 		navigationService.goToWelcome();
+		System.out.println(databaseService.getAdoptedCats());
 		stage.setTitle("CatAdopt");
 		stage.show();
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
+		
 	}
-	
 }

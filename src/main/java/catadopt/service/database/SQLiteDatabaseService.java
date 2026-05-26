@@ -16,7 +16,7 @@ public class SQLiteDatabaseService implements DatabaseService {
 
 	private static String url = "jdbc:sqlite:mi_base.db";
 
-	public static boolean createTable() {
+	public boolean createTable() {
 
 		String sql = """
 				CREATE TABLE IF NOT EXISTS adopted_cats(
@@ -113,5 +113,8 @@ public class SQLiteDatabaseService implements DatabaseService {
 		}
 
 	}
-
+	
+	public void start() {
+		createTable();
+	}
 }

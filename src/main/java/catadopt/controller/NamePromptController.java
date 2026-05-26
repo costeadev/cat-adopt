@@ -14,7 +14,7 @@ public class NamePromptController {
 
 	/**
      * Acción del botón confirmar.
-     */
+    nameAdoptedCat */
 	@FXML
 	private void onConfirm() {
 		catName = nameField.getText();

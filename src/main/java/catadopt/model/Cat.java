@@ -2,10 +2,14 @@ package catadopt.model;
 
 import java.util.Objects;
 
+import com.google.gson.annotations.SerializedName;
+
 // Alberto
 public class Cat {
 	private String id;
 	private String name;
+	
+	@SerializedName("url")
 	private String imageUrl;
 	
 	public Cat(String id, String name, String imageUrl) {

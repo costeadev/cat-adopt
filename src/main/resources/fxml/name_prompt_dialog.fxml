@@ -5,9 +5,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adoptcat.controller.NamePromptController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="catadopt.controller.NamePromptController">
    <children>
-      <TextField fx:id="adoptedCatName" layoutX="140.0" layoutY="106.0" />
-      <Button layoutX="190.0" layoutY="266.0" mnemonicParsing="false" onAction="#nameAdoptedCat" text="Enviar" />
+      <TextField fx:id="nameField" layoutX="140.0" layoutY="106.0" />
+      <Button layoutX="229.0" layoutY="266.0" mnemonicParsing="false" onAction="#onConfirm" text="Enviar" />
+      <Button layoutX="140.0" layoutY="266.0" mnemonicParsing="false" onAction="#onCancel" text="Cancelar" />
    </children>
 </AnchorPane>

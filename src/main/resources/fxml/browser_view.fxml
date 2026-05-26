@@ -11,10 +11,7 @@
       <Button layoutX="14.0" layoutY="188.0" mnemonicParsing="false" onAction="#prevCat" text="&lt;-" />
       <Button layoutX="534.0" layoutY="188.0" mnemonicParsing="false" onAction="#nextCat" text="-&gt;" />
       <Button layoutX="274.0" layoutY="331.0" mnemonicParsing="false" onAction="#adoptCat" text="ADOPT" />
-      <ImageView fx:id="catViewer" fitHeight="208.0" fitWidth="268.0" layoutX="166.0" layoutY="96.0" pickOnBounds="true" smooth="false">
-         <image>
-            <Image url="@../../../../../../Pictures/wuhta.jpg" />
-         </image>
+      <ImageView fx:id="catViewer" fitHeight="208.0" fitWidth="268.0" layoutX="166.0" layoutY="96.0" pickOnBounds="true" smooth="true">
       </ImageView>
       <Button layoutX="44.0" layoutY="26.0" mnemonicParsing="false" onAction="#toAdoptedCats" text="Adopted Menu" />
    </children>

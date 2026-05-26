@@ -44,13 +44,15 @@ public class JavaFXNavigationService implements NavigationService {
 				WelcomeController welcomeCtrl = (WelcomeController) controller;
 				welcomeCtrl.setNavigationService(this);
 			} else if (controller instanceof BrowserController) {
-				BrowserController browserCtrl = (BrowserController) controller;
-				browserCtrl.setNavigationService(this);
-				browserCtrl.setApiService(this.apiService);
+			    BrowserController browserCtrl = (BrowserController) controller;
+			    browserCtrl.setNavigationService(this);
+			    browserCtrl.setApiService(apiService);
+			    browserCtrl.setDatabaseService(databaseService);
+			    browserCtrl.start();
 			} else if (controller instanceof AdoptedCatsController) {
 				AdoptedCatsController adoptedCtrl = (AdoptedCatsController) controller;
 				adoptedCtrl.setNavigationService(this);
-				adoptedCtrl.setDatabaseService(this.databaseService);
+				adoptedCtrl.setDatabaseService(databaseService);
 			}
 
 			// Cambiar la escena del Stage principal
@@ -64,24 +66,24 @@ public class JavaFXNavigationService implements NavigationService {
 		
     @Override
     public void goToWelcome() {
-    	loadScene("welcome_screen.fxml");
+    	loadScene("/fxml/welcome_screen.fxml");
     }
 
     @Override
     public void goToBrowser() {
-    	loadScene("browser_view.fxml");
+    	loadScene("/fxml/browser_view.fxml");
     }
 
     @Override
     public void goToAdoptedCats() {
-    	loadScene("adopted_cats_view.fxml");
+    	loadScene("/fxml/adopted_cats_view.fxml");
     }
 
     @Override
     public String promptForName() {
     	 try {
          	// Carga del diálogo 
-             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/name_prompt_dialog.fxml"));
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/name_prompt_dialog.fxml"));
              Parent root = loader.load();
 
           // Crear una nueva ventana (Stage) secundaria para el diálogo
@@ -100,7 +102,7 @@ public class JavaFXNavigationService implements NavigationService {
              dialogStage.showAndWait(); // Pausa la ejecución hasta que se cierre la ventana
 
           
-             return controller.getEnteredName();// Devuelve el texto definitivo 
+             return controller.getCatName();// Devuelve el texto definitivo 
          } catch (IOException e) {
          	System.err.println("Error al abrir el diálogo name_prompt_dialog.fxml");
              e.printStackTrace();

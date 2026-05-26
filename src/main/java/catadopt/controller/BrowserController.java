@@ -17,131 +17,134 @@ public class BrowserController {
 
 	private NavigationService navigationService;
 
-    private CatApiService apiService;
+	private CatApiService apiService;
 
-    private DatabaseService databaseService;
+	private DatabaseService databaseService;
 
-    List<Cat> cats = new ArrayList();
-    int catIndex = 0;
+	List<Cat> cats = new ArrayList<>();
+	int catIndex;
 
+	/*
+	 * Contenedor visual donde se mostrarán los gatos.
+	 */
+	@FXML
+	private ImageView catViewer;
 
-    /*
-     * Contenedor visual donde se mostrarán
-     * los gatos.
-     */
-    @FXML
-    private ImageView catViewer;
+	@FXML
+	private void initialize() {
+		catIndex = 0;
+	}
 
-    /**
-     * Inyección del servicio de navegación.
-     */
-    public void setNavigationService(
-            NavigationService navigationService
-    ) {
-        this.navigationService = navigationService;
-    }
+	public void start() {
+		if (apiService == null)
+			return;
+		if (cats.isEmpty())
+			loadCats();
 
-    /**
-     * Inyección del servicio API.
-     */
-    public void setApiService(
-            CatApiService apiService
-    ) {
-        this.apiService = apiService;
-    }
+		catIndex = 0;
+		updateCat();
+	}
 
-    /**
-     * Inyección del servicio de base de datos.
-     */
-    public void setDatabaseService(
-            DatabaseService databaseService
-    ) {
-        this.databaseService = databaseService;
-    }
+	/**
+	 * Inyección del servicio de navegación.
+	 */
+	public void setNavigationService(NavigationService navigationService) {
+		this.navigationService = navigationService;
+	}
 
-    /**
-     * Carga gatos desde la API.
-     */
-    public void loadCats() {
+	/**
+	 * Inyección del servicio API.
+	 */
+	public void setApiService(CatApiService apiService) {
+		this.apiService = apiService;
+		loadCats();
 
-        if (cats.isEmpty()) {
-            cats = apiService.fetchCats();
-        }
+		if (!cats.isEmpty()) {
+			catIndex = 0;
+			updateCat();
+		}
+	}
 
-        /*
-         * Aquí se crearían tarjetas visuales
-         * para cada gato.
-         *
-    
-         */
-        for (Cat cat : cats) {
+	/**
+	 * Inyección del servicio de base de datos.
+	 */
+	public void setDatabaseService(DatabaseService databaseService) {
+		this.databaseService = databaseService;
+	}
 
-            System.out.println(cat.getName());
-        }
-    }
+	/**
+	 * Carga gatos desde la API.
+	 */
+	public void loadCats() {
 
-    public void updateCat() {
-        Cat currentCat = cats.get(catIndex);
-        Image image = new Image(currentCat.getImageUrl());
-        catViewer.setImage(image);
-    }
+		if (cats.isEmpty()) {
+			cats = apiService.fetchCats();
+		}
+	}
 
-    public void prevCat() {
-        if (catIndex > 0) { // Indice está dentro de rango
-            catIndex--;
-            updateCat();
-        }
-    }
+	public void updateCat() {
+		try {
+			Cat currentCat = cats.get(catIndex);
+			String imageUrl = currentCat.getImageUrl();
+			Image image = new Image(imageUrl);
+			catViewer.setImage(image);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 
-    public void nextCat() {
-        if (catIndex < cats.size() - 1) { // Indice está dentro de rango
-            catIndex++;
-            updateCat();
-        }
-    }
+	}
 
-    /**
-     * Acción del botón Adoptar.
-     */
-    public void adoptCat() {
+	public void prevCat() {
+		if (catIndex > 0) { // Indice está dentro de rango
+			catIndex--;
+			updateCat();
+		}
+	}
 
-        Cat currentCat = cats.get(catIndex);
+	public void nextCat() {
+		if (catIndex < cats.size() - 1) { // Indice está dentro de rango
+			catIndex++;
+			updateCat();
+		}
+	}
 
-        // Pide nombre al usuario
-        String newName = navigationService.promptForName();
+	/**
+	 * Acción del botón Adoptar.
+	 */
+	public void adoptCat() {
 
-        // Si canceló, no continuar
-        if (newName == null || newName.isBlank()) {
-            return;
-        }
+		Cat currentCat = cats.get(catIndex);
 
-        // Cambia nombre del gato
-        currentCat.setName(newName);
+		// Pide nombre al usuario
+		String newName = navigationService.promptForName();
 
-        // Guarda en DB
-        databaseService.adoptCat(currentCat);
+		// Si canceló, no continuar
+		if (newName == null || newName.isBlank()) {
+			return;
+		}
 
-        // Refresca gato
-        cats.remove(catIndex);
+		// Cambia nombre del gato
+		currentCat.setName(newName);
 
-        if (!cats.isEmpty()) {
-            prevCat();
-        } else {
-        	loadCats();
-        }
-    }
+		// Guarda en DB
+		databaseService.adoptCat(currentCat);
 
-    /**
-     * Navega a pantalla adoptados.
-     */
-    @FXML
-    private void toAdoptedCats() {
-        navigationService.goToAdoptedCats();
-    }
+		// Refresca gato
+		cats.remove(catIndex);
 
-    //@Override
-    public void initialize() {
-        loadCats();
-    }
-    
+		if (!cats.isEmpty()) {
+			prevCat();
+		} else {
+			loadCats();
+		}
+	}
+
+	/**
+	 * Navega a pantalla adoptados.
+	 */
+	@FXML
+	private void toAdoptedCats() {
+		navigationService.goToAdoptedCats();
+	}
+
 }
