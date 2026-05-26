@@ -6,5 +6,8 @@ import catadopt.model.Cat;
 
 public interface DatabaseService {
 	void adoptCat(Cat cat);
+
 	List<Cat> getAdoptedCats();
+
+	void renameCat(Cat cat);
 }
