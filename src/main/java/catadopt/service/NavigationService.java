@@ -1,6 +1,7 @@
 package catadopt.service;
 
 public interface NavigationService {
+	void loadScene(String fxmlFile);
 	void goToWelcome();
 	void goToBrowser();
 	void goToAdoptedCats();
