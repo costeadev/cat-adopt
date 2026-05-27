@@ -17,8 +17,13 @@ public class NamePromptController {
     nameAdoptedCat */
 	@FXML
 	private void onConfirm() {
-		catName = nameField.getText();
-		dialogStage.close();
+        String text = nameField.getText().trim();
+
+        if (!text.isEmpty()) {
+            catName = text;
+        }
+
+        dialogStage.close();
 	}
 
 	 /**
@@ -42,6 +47,11 @@ public class NamePromptController {
      */
     public String getCatName() {
         return catName;
+    }
+    
+    @FXML
+    private void initialize() { // El formulario en envia al pulsar ENTER
+        nameField.setOnAction(e -> onConfirm());
     }
 	
 }

@@ -21,7 +21,8 @@ public class BrowserController {
 
 	private DatabaseService databaseService;
 
-	List<Cat> cats = new ArrayList<>();
+	private List<Cat> cachedCats;
+	private List<Image> cachedImages;
 	int catIndex;
 
 	/*
@@ -36,13 +37,19 @@ public class BrowserController {
 	}
 
 	public void start() {
-		if (apiService == null)
-			return;
-		if (cats.isEmpty())
-			loadCats();
 
-		catIndex = 0;
-		updateCat();
+	    if (apiService == null) {
+	        return;
+	    }
+
+	    loadCats();
+
+	    if (cachedCats.isEmpty()) {
+	        return;
+	    }
+
+	    catIndex = 0;
+	    updateCat();
 	}
 
 	/**
@@ -59,7 +66,7 @@ public class BrowserController {
 		this.apiService = apiService;
 		loadCats();
 
-		if (!cats.isEmpty()) {
+		if (!cachedCats.isEmpty()) {
 			catIndex = 0;
 			updateCat();
 		}
@@ -77,41 +84,43 @@ public class BrowserController {
 	 */
 	public void loadCats() {
 
-		if (cats.isEmpty()) {
-			cats = apiService.fetchCats();
-		}
+	    if (cachedCats == null || cachedCats.isEmpty()) {
+	        cachedCats = apiService.fetchCats();
+	    }
+
+	    cachedImages = new ArrayList<>();
+
+	    for (Cat cat : cachedCats) {
+	        cachedImages.add(new Image(cat.getImageUrl(), true));
+	    }
 	}
 
 	public void updateCat() {
-		try {
-			Cat currentCat = cats.get(catIndex);
-			String imageUrl = currentCat.getImageUrl();
-			Image image = new Image(imageUrl, true);
-			catViewer.setImage(image);
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
+	    if (cachedImages == null || cachedImages.isEmpty()) {
+	    	return;
+	    }
 
-	}
-
-	public void prevCat() {
-		if (catIndex >= 0) { // Indice está dentro de rango
-			catIndex--;
-			if (catIndex == -1) { // Vuelta completa
-				catIndex = cats.size() - 1;
-			}
-			updateCat();
-		}
+	    catViewer.setImage(cachedImages.get(catIndex));
 	}
 
 	public void nextCat() {
-		if (catIndex <= cats.size() - 1) { // Indice está dentro de rango
-			catIndex++;
-			if (catIndex == cats.size()) { // Vuelta completa
-				catIndex = 0;
-			}
-			updateCat();
-		}
+	    if (cachedCats == null || cachedCats.isEmpty()) {
+	    	return;
+	    }
+
+	    // Al pasar el gato en la última posicion, cambiamos a la primera posición, haciendo la vuelta completa
+	    catIndex = (catIndex + 1) % cachedCats.size();
+	    updateCat();
+	}
+
+	public void prevCat() {
+	    if (cachedCats == null || cachedCats.isEmpty()) {
+	    	return;
+	    }
+
+	    // Al pasar el gato en la primera posición, cambiamos a la última posición, haciendo la vuelta completa
+	    catIndex = (catIndex - 1 + cachedCats.size()) % cachedCats.size(); 
+	    updateCat();
 	}
 
 	/**
@@ -119,7 +128,7 @@ public class BrowserController {
 	 */
 	public void adoptCat() {
 
-		Cat currentCat = cats.get(catIndex);
+		Cat currentCat = cachedCats.get(catIndex);
 
 		// Pide nombre al usuario
 		String newName = navigationService.promptForName();
@@ -135,10 +144,12 @@ public class BrowserController {
 		// Guarda en DB
 		databaseService.adoptCat(currentCat);
 
-		// Refresca gato
-		cats.remove(catIndex);
+		// Elimina de las listas visible
+		cachedCats.remove(catIndex);
+		cachedImages.remove(catIndex);
 
-		if (!cats.isEmpty()) {
+		// Refresca gato
+		if (!cachedCats.isEmpty()) {
 			if (catIndex != 0) {
 				prevCat();
 			} else {

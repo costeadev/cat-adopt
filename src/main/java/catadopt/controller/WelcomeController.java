@@ -22,7 +22,6 @@ public class WelcomeController {
      */
     @FXML
     private void toBrowser() {
-
         navigationService.goToBrowser();
     }
 	

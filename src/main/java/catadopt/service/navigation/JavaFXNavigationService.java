@@ -15,104 +15,170 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-// Sandra
-
 public class JavaFXNavigationService implements NavigationService {
-	
-	private Stage stage;
-	private CatApiService apiService;
-	private DatabaseService databaseService;
 
-	public JavaFXNavigationService(Stage stage, CatApiService apiService, DatabaseService databaseService) {
-		this.stage = stage;
-		this.apiService = apiService;
-		this.databaseService = databaseService;
-	}
-	
-	@Override
-	public void loadScene(String fxmlFile) {
-		try {
-			
-			// Asumiendo los FXML  están en la carpeta de recursos
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-			Parent root = loader.load();
-			
-			// Cambiar la escena del Stage principal
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
+    private final Stage stage;
+    private final CatApiService apiService;
+    private final DatabaseService databaseService;
 
-			// Obtener el controlador asignado en el FXML
-			Object controller = loader.getController();
+    private Parent browserRoot;
+    private Parent adoptedRoot;
+    private Parent welcomeRoot;
 
-			// Inyección dinámica de dependencias según el controlador cargado
-			if (controller instanceof WelcomeController) {
-				WelcomeController welcomeCtrl = (WelcomeController) controller;
-				welcomeCtrl.setNavigationService(this);
-			} else if (controller instanceof BrowserController) {
-			    BrowserController browserCtrl = (BrowserController) controller;
-			    browserCtrl.setNavigationService(this);
-			    browserCtrl.setApiService(apiService);
-			    browserCtrl.setDatabaseService(databaseService);
-			    browserCtrl.start();
-			} else if (controller instanceof AdoptedCatsController) {
-				AdoptedCatsController adoptedCtrl = (AdoptedCatsController) controller;
-				adoptedCtrl.setNavigationService(this);
-				adoptedCtrl.setDatabaseService(databaseService);
-				adoptedCtrl.setScene(scene);
-				adoptedCtrl.start();
-			}
+    private Scene browserScene;
+    private Scene adoptedScene;
+    private Scene welcomeScene;
 
-		} catch (IOException e) {
-			System.err.println("Error al cargar la vista: " + fxmlFile);
-			e.printStackTrace();
-		}
-	}
-		
-    @Override
-    public void goToWelcome() {
-    	loadScene("/fxml/welcome_screen.fxml");
+    private BrowserController browserController;
+    private AdoptedCatsController adoptedCatsController;
+
+    public JavaFXNavigationService(Stage stage,
+                                   CatApiService apiService,
+                                   DatabaseService databaseService) {
+        this.stage = stage;
+        this.apiService = apiService;
+        this.databaseService = databaseService;
     }
 
     @Override
     public void goToBrowser() {
-    	loadScene("/fxml/browser_view.fxml");
+        loadScene("/fxml/browser_view.fxml");
     }
 
     @Override
     public void goToAdoptedCats() {
-    	loadScene("/fxml/adopted_cats_view.fxml");
+        loadScene("/fxml/adopted_cats_view.fxml");
+    }
+
+    @Override
+    public void goToWelcome() {
+        loadScene("/fxml/welcome_screen.fxml");
+    }
+
+
+    @Override
+    public void loadScene(String fxmlFile) {
+
+        try {
+
+            switch (fxmlFile) {
+
+                case "/fxml/browser_view.fxml" -> {
+
+                    if (browserRoot == null) {
+
+                        FXMLLoader loader =
+                                new FXMLLoader(getClass().getResource(fxmlFile));
+
+                        browserRoot = loader.load();
+
+                        browserController = loader.getController();
+
+                        browserController.setNavigationService(this);
+                        browserController.setApiService(apiService);
+                        browserController.setDatabaseService(databaseService);
+
+                        browserController.start();
+
+                        browserScene = new Scene(browserRoot);
+                    }
+
+                    stage.setScene(browserScene);
+                }
+
+                case "/fxml/adopted_cats_view.fxml" -> {
+
+                    if (adoptedRoot == null) {
+
+                        FXMLLoader loader =
+                                new FXMLLoader(getClass().getResource(fxmlFile));
+
+                        adoptedRoot = loader.load();
+
+                        adoptedCatsController = loader.getController();
+
+                        adoptedCatsController.setNavigationService(this);
+                        adoptedCatsController.setDatabaseService(databaseService);
+
+                        adoptedCatsController.start();
+
+                        adoptedScene = new Scene(adoptedRoot);
+                    }
+                    
+                    adoptedCatsController.refresh();
+
+                    stage.setScene(adoptedScene);
+                }
+
+                case "/fxml/welcome_screen.fxml" -> {
+
+                    if (welcomeRoot == null) {
+
+                        FXMLLoader loader =
+                                new FXMLLoader(getClass().getResource(fxmlFile));
+
+                        welcomeRoot = loader.load();
+
+                        WelcomeController controller =
+                                loader.getController();
+
+                        controller.setNavigationService(this);
+
+                        welcomeScene = new Scene(welcomeRoot);
+                    }
+
+                    stage.setScene(welcomeScene);
+                }
+
+                default -> {
+
+                    FXMLLoader loader =
+                            new FXMLLoader(getClass().getResource(fxmlFile));
+
+                    Parent root = loader.load();
+
+                    stage.setScene(new Scene(root));
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public String promptForName() {
-    	 try {
-         	// Carga del diálogo 
-             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/name_prompt_dialog.fxml"));
-             Parent root = loader.load();
 
-          // Crear una nueva ventana (Stage) secundaria para el diálogo
-             Stage dialogStage = new Stage();
-             dialogStage.setTitle("Nombre del Gatito");
-             dialogStage.initModality(Modality.WINDOW_MODAL);
-             dialogStage.initOwner(stage);
-             
-             Scene scene = new Scene(root);
-             dialogStage.setScene(scene);
+        try {
 
-             // Obtener el controlador del diálogo para extraer el nombre ingresado
-             NamePromptController controller = loader.getController();
-             controller.setDialogStage(dialogStage);
+            FXMLLoader loader =
+                    new FXMLLoader(getClass()
+                            .getResource("/fxml/name_prompt_dialog.fxml"));
 
-             dialogStage.showAndWait(); // Pausa la ejecución hasta que se cierre la ventana
+            Parent root = loader.load();
 
-          
-             return controller.getCatName();// Devuelve el texto definitivo 
-         } catch (IOException e) {
-         	System.err.println("Error al abrir el diálogo name_prompt_dialog.fxml");
-             e.printStackTrace();
-             return null;
-         }
-     
+            Stage dialogStage = new Stage();
+
+            dialogStage.setTitle("Nombre del Gatito");
+
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+
+            dialogStage.initOwner(stage);
+
+            dialogStage.setScene(new Scene(root));
+
+            NamePromptController controller =
+                    loader.getController();
+
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+            return controller.getCatName();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-
 }
