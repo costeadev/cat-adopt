@@ -23,7 +23,6 @@ public class App extends Application {
 		
 		databaseService.start();
 		navigationService.goToWelcome();
-		System.out.println(databaseService.getAdoptedCats());
 		stage.setTitle("CatAdopt");
 		stage.show();
 	}

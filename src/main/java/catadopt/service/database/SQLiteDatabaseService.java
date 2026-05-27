@@ -16,7 +16,7 @@ public class SQLiteDatabaseService implements DatabaseService {
 
 	private static String url = "jdbc:sqlite:mi_base.db";
 
-	public boolean createTable() {
+	public void createTable() {
 
 		String sql = """
 				CREATE TABLE IF NOT EXISTS adopted_cats(
@@ -32,35 +32,29 @@ public class SQLiteDatabaseService implements DatabaseService {
 			stms.execute(sql);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new RuntimeException("Error al conectar con SQLite", e);
 		}
-
-		return true;
-
 	}
 
 	@Override
 	public void adoptCat(Cat cat) {
-
 		String sql = """
 				INSERT INTO adopted_cats(id, name, image_url)
 				VALUES (?,?,?);
 				""";
 
 		try (Connection conn = DriverManager.getConnection(url); 
-				PreparedStatement pstms = conn.prepareStatement(sql)) {
+				PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			pstms.setString(1, cat.getId());
-			pstms.setString(2, cat.getName());
-			pstms.setString(3, cat.getImageUrl());
+			ps.setString(1, cat.getId());
+			ps.setString(2, cat.getName());
+			ps.setString(3, cat.getImageUrl());
 
-			pstms.executeUpdate();
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Error insertando gato", e);
 		}
-
 	}
 
 	@Override
@@ -78,14 +72,11 @@ public class SQLiteDatabaseService implements DatabaseService {
 
 			while (rs.next()) {
 
-				cats.add(new Cat(rs.getString("id"), 
-								 rs.getString("name"), 
-								 rs.getString("image_url")));
+				cats.add(new Cat(rs.getString("id"), rs.getString("name"), rs.getString("image_url")));
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new RuntimeException("Error al conectar con SQLite", e);
 		}
 
 		return cats;
@@ -95,8 +86,8 @@ public class SQLiteDatabaseService implements DatabaseService {
 	public void renameCat(Cat cat) {
 
 		String sql = """
-				UPDATE adopted_cats 
-				SET name = ? 
+				UPDATE adopted_cats
+				SET name = ?
 				WHERE id = ?;
 				""";
 
@@ -109,12 +100,32 @@ public class SQLiteDatabaseService implements DatabaseService {
 			pstms.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Error al conectar con SQLite", e);
+		}
+	}
+
+	@Override
+	public void removeCat(Cat cat) {
+		String sql = """
+				DELETE FROM adopted_cats
+				WHERE id = ?;
+				""";
+
+		try (Connection conn = DriverManager.getConnection(url); 
+				PreparedStatement pstms = conn.prepareStatement(sql)) {
+
+			pstms.setString(1, cat.getId());
+
+			pstms.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Error al conectar con SQLite", e);
 		}
 
 	}
-	
+
 	public void start() {
 		createTable();
 	}
+
 }
