@@ -1,0 +1,6 @@
+.button {
+    -fx-background-color : darkgrey;
+    -fx-border-radius : 20px;
+    -fx-padding : 30px;
+    -fx-font-size : 20pt;
+}
