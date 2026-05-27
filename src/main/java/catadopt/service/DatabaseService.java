@@ -12,4 +12,6 @@ public interface DatabaseService {
 	List<Cat> getAdoptedCats();
 
 	void renameCat(Cat cat);
+	
+	void removeCat(Cat cat);
 }
