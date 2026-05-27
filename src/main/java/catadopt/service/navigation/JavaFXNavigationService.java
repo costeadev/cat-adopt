@@ -32,9 +32,14 @@ public class JavaFXNavigationService implements NavigationService {
 	@Override
 	public void loadScene(String fxmlFile) {
 		try {
+			
 			// Asumiendo los FXML  están en la carpeta de recursos
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
 			Parent root = loader.load();
+			
+			// Cambiar la escena del Stage principal
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
 
 			// Obtener el controlador asignado en el FXML
 			Object controller = loader.getController();
@@ -53,11 +58,10 @@ public class JavaFXNavigationService implements NavigationService {
 				AdoptedCatsController adoptedCtrl = (AdoptedCatsController) controller;
 				adoptedCtrl.setNavigationService(this);
 				adoptedCtrl.setDatabaseService(databaseService);
+				adoptedCtrl.setScene(scene);
+				adoptedCtrl.start();
 			}
 
-			// Cambiar la escena del Stage principal
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
 		} catch (IOException e) {
 			System.err.println("Error al cargar la vista: " + fxmlFile);
 			e.printStackTrace();

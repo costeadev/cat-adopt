@@ -86,7 +86,7 @@ public class BrowserController {
 		try {
 			Cat currentCat = cats.get(catIndex);
 			String imageUrl = currentCat.getImageUrl();
-			Image image = new Image(imageUrl);
+			Image image = new Image(imageUrl, true);
 			catViewer.setImage(image);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -95,15 +95,21 @@ public class BrowserController {
 	}
 
 	public void prevCat() {
-		if (catIndex > 0) { // Indice está dentro de rango
+		if (catIndex >= 0) { // Indice está dentro de rango
 			catIndex--;
+			if (catIndex == -1) { // Vuelta completa
+				catIndex = cats.size() - 1;
+			}
 			updateCat();
 		}
 	}
 
 	public void nextCat() {
-		if (catIndex < cats.size() - 1) { // Indice está dentro de rango
+		if (catIndex <= cats.size() - 1) { // Indice está dentro de rango
 			catIndex++;
+			if (catIndex == cats.size()) { // Vuelta completa
+				catIndex = 0;
+			}
 			updateCat();
 		}
 	}
@@ -133,8 +139,13 @@ public class BrowserController {
 		cats.remove(catIndex);
 
 		if (!cats.isEmpty()) {
-			prevCat();
-		} else {
+			if (catIndex != 0) {
+				prevCat();
+			} else {
+				updateCat();
+			}
+		} 
+		else {
 			loadCats();
 		}
 	}
