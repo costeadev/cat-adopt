@@ -5,22 +5,35 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="catadopt.controller.AdoptedCatsController">
-	<children>
-		<ScrollPane fitToWidth="true" layoutX="188.0" layoutY="200.0" prefHeight="500.0" prefWidth="500.0">
-			<content>
-				<GridPane fx:id="adoptedCatsContainer">
-					<columnConstraints>
-						<ColumnConstraints hgrow="ALWAYS" />
-						<ColumnConstraints hgrow="ALWAYS" />
-						<ColumnConstraints hgrow="ALWAYS" />
-						<ColumnConstraints hgrow="ALWAYS" />
-					</columnConstraints>
-				</GridPane>
-			</content>
-		</ScrollPane>
-      <Button layoutX="400.0" layoutY="763.0" mnemonicParsing="false" onAction="#onDeleteClick" text="Matar gato" />
-      <Button layoutX="556.0" layoutY="763.0" mnemonicParsing="false" onAction="#onBackClick" text="Volver" />
-	</children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="catadopt.controller.AdoptedCatsController">
+   <children>
+      <ScrollPane prefHeight="330.0" prefWidth="600.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="336.0" prefWidth="584.0">
+               <children>
+                  <VBox layoutX="1.0" layoutY="-1.0" prefHeight="330.0" prefWidth="584.0">
+                     <children>
+                        <GridPane fx:id="adoptedCatsContainer" prefHeight="190.0" prefWidth="584.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <Button layoutX="402.0" layoutY="349.0" mnemonicParsing="false" onAction="#onDeleteClick" text="Liberar" />
+      <Button layoutX="513.0" layoutY="349.0" mnemonicParsing="false" onAction="#onBackClick" text="Regresar" />
+   </children>
 </AnchorPane>
