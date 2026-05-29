@@ -1,6 +1,79 @@
-.button {
-    -fx-background-color : darkgrey;
-    -fx-border-radius : 20px;
-    -fx-padding : 30px;
-    -fx-font-size : 20pt;
+AnchorPane {
+	-fx-background-color : d8d8d8;
+}
+
+Label {
+	-fx-text-fill : white;
+	-fx-font-size : 50pt;
+	-fx-font-weight : bolder;
+}
+ 
+Button {
+	-fx-background-color : c0c0c0;
+	-fx-border-radius : 50px;
+	-fx-font-size : 11pt;
+	-fx-text-fill : white;
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10,0,0,2);
+}
+
+.welcomeButton {
+	-fx-font-size : 20pt;
+	-fx-left-padding : 20px;
+}
+
+.prevButton {
+	-fx-background-color : c0c0c0;
+	-fx-border-radius : 50px;
+	-fx-font-size : 20pt;
+	-fx-text-fill : white;
+}
+
+.nextButton {
+	-fx-background-color : c0c0c0;
+	-fx-border-radius : 50px;
+	-fx-font-size : 20pt;
+	-fx-text-fill : white;
+}
+
+.menuButton {
+	-fx-font-size : 11pt;
+	-fx-padding : 4px;
+}
+
+.adoptButton {
+	-fx-font-size : 20pt;
+	-fx-font-weight : 10;
+	-fx-text-fill : black;
+	-fx-padding : 1px;
+	-fx-background-color:  ffd755;
+}
+
+.adoptButton:hover {
+	-fx-background-color : green;
+	-fx-font-weight : bold;
+}
+
+.freeAdopt:hover {
+	-fx-background-color : red;
+	-fx-font-fill : black;
+	-fx-font-weight : bold;
+}
+
+.keepAdopt:hover {
+	-fx-background-color : green;
+	-fx-font-fill : white;
+	-fx-font-weight : bold;
+}
+
+.renameButton:hover {
+	-fx-background-color : green;
+	-fx-font-fill : white;
+	-fx-font-weight : bold;
+	
+}
+
+.cancelRenameButton:hover {
+	-fx-background-color : red;
+	-fx-font-fill : black;
+	-fx-font-weight : bold;
 }
