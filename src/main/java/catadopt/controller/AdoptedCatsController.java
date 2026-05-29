@@ -130,7 +130,7 @@ public class AdoptedCatsController {
 			return;
 		}
 
-		int maxCols = 4;
+		int maxCols = 3;
 
 		for (int i = 0; i < adoptedCats.size(); i++) {
 			Cat cat = adoptedCats.get(i);
