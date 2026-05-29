@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="catadopt.controller.AdoptedCatsController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="catadopt.controller.AdoptedCatsController">
 	<children>
-		<ScrollPane fitToWidth="true" prefHeight="330" prefWidth="600">
+		<ScrollPane fitToWidth="true" prefHeight="330" prefWidth="600.0">
 			<content>
-				<GridPane fx:id="adoptedCatsContainer" hgap="20" vgap="20" prefWidth="760"/>
+				<GridPane fx:id="adoptedCatsContainer" hgap="20" prefWidth="600" vgap="20" />
 			</content>
 		</ScrollPane>
-		<Button layoutX="402" layoutY="349" onAction="#onDeleteClick" text="Liberar"/>
-		<Button layoutX="513" layoutY="349" onAction="#onBackClick" text="Regresar" />
+		<Button layoutX="402" layoutY="349" onAction="#onDeleteClick" styleClass="freeAdopt" text="Liberar" />
+		<Button layoutX="513" layoutY="349" onAction="#onBackClick" styleClass="keepAdopt" text="Regresar" />
 	</children>
 </AnchorPane>

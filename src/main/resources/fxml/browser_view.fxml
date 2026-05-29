@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="catadopt.controller.BrowserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="catadopt.controller.BrowserController">
    <children>
-      <Button layoutX="14.0" layoutY="188.0" mnemonicParsing="false" onAction="#prevCat" text="&lt;-" />
-      <Button layoutX="534.0" layoutY="188.0" mnemonicParsing="false" onAction="#nextCat" text="-&gt;" />
-      <Button layoutX="274.0" layoutY="331.0" mnemonicParsing="false" onAction="#adoptCat" text="ADOPT" />
+      <Button layoutX="18.0" layoutY="172.0" mnemonicParsing="false" onAction="#prevCat" styleClass="prevButton" text="&lt;" />
+      <Button layoutX="531.0" layoutY="172.0" mnemonicParsing="false" onAction="#nextCat" styleClass="nextButton" text="&gt;" />
+      <Button layoutX="225.0" layoutY="313.0" mnemonicParsing="false" onAction="#adoptCat" prefHeight="20.0" prefWidth="150.0" styleClass="adoptButton" text="ADOPT" />
       <ImageView fx:id="catViewer" fitHeight="208.0" fitWidth="268.0" layoutX="166.0" layoutY="96.0" pickOnBounds="true" smooth="true">
       </ImageView>
-      <Button layoutX="44.0" layoutY="26.0" mnemonicParsing="false" onAction="#toAdoptedCats" text="Adopted Menu" />
+      <Button layoutX="45.0" layoutY="26.0" mnemonicParsing="false" onAction="#toAdoptedCats" prefHeight="29.0" prefWidth="120.0" styleClass="menuButton" text="Adopted Menu" />
    </children>
 </AnchorPane>
